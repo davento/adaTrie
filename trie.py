@@ -1,0 +1,100 @@
+ALPHABET_SIZE = 26
+
+class trieNode:
+    def __init__(self):
+        self.children = [None]*ALPHABET_SIZE
+        self.isEnd = False
+
+class Trie:
+    def __init__(self):
+        self.root = self.getNode()
+        self.diffs = {}
+        self.levels = []
+        self.nodes = 0
+        self.s = []
+
+    def getNode(self):
+        return trieNode()
+
+    def getIndex(self, ch):
+        return ord(ch)-ord('a')
+
+    def insert(self, string_):
+        pointer = self.root
+        stringLength = len(string_)
+
+        for character in range(stringLength):
+            index = self.getIndex(string_[character])
+            if not pointer.children[index]:
+                pointer.children[index] = self.getNode()
+                self.nodes += 1
+            pointer = pointer.children[index]
+        pointer.isEnd = True
+
+    def setLevels(self, m, n):
+        for level in range(m):
+            elems = []
+            for i in range(n):
+                elems.append(self.s[i][level])
+            self.levels.append(elems)
+
+    def printTrie(self):
+        print("Created trie")
+        for level in self.levels:
+            print(level)
+            print("  |  " * len(level))
+        print("Number of nodes: ", self.nodes)
+
+    def calculateDiffsPerLevel(self, level, i):
+        already = set()
+        for j in range(len(level)):
+            already.add(level[j])    
+        self.diffs[i] = len(already)     
+
+    def calculateDiffs(self):
+        i = 0
+        for level in self.levels:
+            self.diffs[i] = 0
+            self.calculateDiffsPerLevel(level, i)
+            i += 1
+    
+    def greedyMinTrie(self):
+        trie = Trie()
+        self.calculateDiffs()
+        d = dict(sorted(self.diffs.items(), key=lambda item: item[1]))
+        print("Trie levels and their corresponding number of different letters sorted decreasingly:", d)
+        print(self.levels)
+        trie.s = []
+        for i in d:
+            print("value of i: ", i, "| appending: ", self.levels[i])
+            trie.s.append(self.levels[i])
+        for string_ in trie.s:
+            trie.insert(string_)
+        return trie
+    
+def main():
+    trie = Trie()
+
+    n = int(input("Number of strings\n> "))
+    m = int(input("Of length\n> "))
+
+    print("Insert strings:")
+    for i in range(n):
+        string_ = input("> ")
+        trie.s.append(string_)
+
+    for string_ in trie.s:
+        trie.insert(string_)
+
+    trie.setLevels(m, n)
+    trie.printTrie()
+    
+    print("===After Greedy===")
+
+    minTrie = trie.greedyMinTrie()
+    # print(minTrie.s)
+    minTrie.setLevels(m,n)
+    minTrie.printTrie()
+
+if __name__ == '__main__':
+    main()
