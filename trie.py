@@ -14,6 +14,7 @@ class Trie:
         self.levels = []
         self.nodes = 0
         self.s = []
+        self.p = []
 
     def getNode(self):
         return trieNode()
@@ -65,6 +66,10 @@ class Trie:
         self.calculateDiffs()
         d = dict(sorted(self.diffs.items(), key=lambda item: item[1]))
         trie.s = []
+        trie.p = []
+        for i in d.keys():
+            trie.p.append(i)
+        print("P:", trie.p)
         for string_ in self.s:
             greedyString = ""
             for i in d:
@@ -73,16 +78,6 @@ class Trie:
         for string_ in trie.s:
             trie.insert(string_)
         return trie
-
-    def printTrieMin(self):
-        print("Created trie")
-        for level in self.levels:
-            already = set()
-            for letter in level:
-                already.add(letter)
-            print(already)
-            print("  |  " * len(already))
-        print("Number of nodes: ", self.nodes)
     
 def main():
     trie = Trie()
@@ -95,6 +90,8 @@ def main():
 
     m = len(trie.s[0])
     n = len(trie.s)
+    trie.p = list(range(0, m))
+    print("P:", trie.p)
     
     for string_ in trie.s:
         trie.insert(string_)
@@ -106,7 +103,7 @@ def main():
 
     minTrie = trie.greedyMinTrie()
     minTrie.setLevels(m,n)
-    minTrie.printTrieMin()
+    minTrie.printTrie()
 
 if __name__ == '__main__':
     main()

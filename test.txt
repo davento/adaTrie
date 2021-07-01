@@ -1,3 +1,4 @@
-bbb
-acb
-ccb
+aaa
+baa
+bac
+cbb
