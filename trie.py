@@ -71,6 +71,16 @@ class Trie:
         for string_ in trie.s:
             trie.insert(string_)
         return trie
+
+    def printTrieMin(self):
+        print("Created trie")
+        for level in self.levels:
+            already = set()
+            for letter in level:
+                already.add(letter)
+            print(already)
+            print("  |  " * len(already))
+        print("Number of nodes: ", self.nodes)
     
 def main():
     trie = Trie()
@@ -93,7 +103,7 @@ def main():
 
     minTrie = trie.greedyMinTrie()
     minTrie.setLevels(m,n)
-    minTrie.printTrie()
+    minTrie.printTrieMin()
 
 if __name__ == '__main__':
     main()
