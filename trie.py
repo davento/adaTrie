@@ -62,12 +62,12 @@ class Trie:
         trie = Trie()
         self.calculateDiffs()
         d = dict(sorted(self.diffs.items(), key=lambda item: item[1]))
-        print("Trie levels and their corresponding number of different letters sorted decreasingly:", d)
-        print(self.levels)
         trie.s = []
-        for i in d:
-            print("value of i: ", i, "| appending: ", self.levels[i])
-            trie.s.append(self.levels[i])
+        for string_ in self.s:
+            greedyString = ""
+            for i in d:
+                greedyString += string_[i]
+            trie.s.append(greedyString)
         for string_ in trie.s:
             trie.insert(string_)
         return trie
@@ -92,7 +92,6 @@ def main():
     print("===After Greedy===")
 
     minTrie = trie.greedyMinTrie()
-    # print(minTrie.s)
     minTrie.setLevels(m,n)
     minTrie.printTrie()
 
