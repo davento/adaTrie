@@ -1,3 +1,5 @@
+import sys
+
 ALPHABET_SIZE = 26
 
 class trieNode:
@@ -84,15 +86,16 @@ class Trie:
     
 def main():
     trie = Trie()
-
-    n = int(input("Number of strings\n> "))
-    m = int(input("Of length\n> "))
-
-    print("Insert strings:")
-    for i in range(n):
-        string_ = input("> ")
+    
+    f = open(sys.argv[1], 'r')
+    temp = f.read().splitlines()
+    for string_ in temp:
         trie.s.append(string_)
+    f.close()
 
+    m = len(trie.s[0])
+    n = len(trie.s)
+    
     for string_ in trie.s:
         trie.insert(string_)
 
