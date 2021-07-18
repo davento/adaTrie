@@ -1,4 +1,6 @@
 import sys
+import os
+import errno
 
 ALPHABET_SIZE = 26
 
@@ -6,6 +8,7 @@ class trieNode:
     def __init__(self):
         self.children = [None]*ALPHABET_SIZE
         self.isEnd = False
+        self.id = None
 
 class Trie:
     def __init__(self):
@@ -13,8 +16,13 @@ class Trie:
         self.diffs = {}
         self.levels = []
         self.nodes = 0
+        self.m = 0
+        self.n = 0
         self.s = []
         self.p = []
+        
+        self.root.id = 0
+        self.nodesList = [self.root]
 
     def getNode(self):
         return trieNode()
@@ -31,21 +39,42 @@ class Trie:
             if not pointer.children[index]:
                 pointer.children[index] = self.getNode()
                 self.nodes += 1
+                (pointer.children[index]).id = self.nodes
+                self.nodesList.append(pointer.children[index])
             pointer = pointer.children[index]
         pointer.isEnd = True
 
     def setLevels(self, m, n):
-        for level in range(m):
+        self.m = m
+        self.n = n
+        for level in range(self.m):
             elems = []
-            for i in range(n):
+            for i in range(self.n):
                 elems.append(self.s[i][level])
             self.levels.append(elems)
 
-    def printTrie(self):
-        print("Created trie")
-        for level in self.levels:
-            print(level)
-            print("  |  " * len(level))
+    def createOutputFile(self, filename):
+        filename = "./output/"+filename
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc:
+                if exc.errno != errno.EEXIST:
+                    raise
+        f = open(filename, "w")
+        f.truncate(0)
+        for i in self.nodesList:
+            temp = []
+            for j in range(ALPHABET_SIZE):
+                if i.children[j]:
+                    temp.append((chr(ord('a')+j), i.children[j].id))
+            f.write(str(i.id) + ' ' + str(temp) + '\n')
+
+    def printTrie(self, filename = "output.txt"):
+
+        print("Printing Trie...")
+        self.createOutputFile(filename)
+        print("Trie output in", filename)
         print("Number of nodes: ", self.nodes)
 
     def calculateDiffsPerLevel(self, level, i):
@@ -95,15 +124,17 @@ def main():
     
     for string_ in trie.s:
         trie.insert(string_)
+    print("Trie created")
 
     trie.setLevels(m, n)
-    trie.printTrie()
+    trie.printTrie("preGreedy.txt")
     
     print("===After Greedy===")
 
     minTrie = trie.greedyMinTrie()
     minTrie.setLevels(m,n)
-    minTrie.printTrie()
+    print("Min Trie created")
+    minTrie.printTrie("postGreedy.txt")
 
 if __name__ == '__main__':
     main()
