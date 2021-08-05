@@ -41,7 +41,6 @@ class Trie:
                 (pointer.children[index]).id = self.nodes
                 self.nodesList.append(pointer.children[index])
             pointer = pointer.children[index]
-        pointer.isEnd = True
 
     def setLevels(self, m, n):
         self.m = m
@@ -61,7 +60,7 @@ class Trie:
         print("P:", self.p)
         for string_ in self.s:
             self.insert(string_)
-        print("Trie created")
+        print("S-ptrie created")
         self.setLevels(self.m, self.n)    
 
     def createOutputFile(self, filename):
@@ -84,7 +83,7 @@ class Trie:
 
     def printTrie(self, filename = "output.txt"):
 
-        print("Printing Trie...")
+        print("Printing S-ptrie...")
         self.createOutputFile(filename)
         print("Trie output in", filename)
         print("Number of nodes: ", self.nodes)
