@@ -91,9 +91,9 @@ class Trie:
             i += 1
     
     def greedyMinTrie(self):
-        trie = Trie()
         self.calculateDiffs()
         d = dict(sorted(self.diffs.items(), key=lambda item: item[1]))
+        trie = Trie()
         trie.s = []
         trie.p = []
         for i in d.keys():
