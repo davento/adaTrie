@@ -52,6 +52,18 @@ class Trie:
                 elems.append(self.s[i][level])
             self.levels.append(elems)
 
+    def create(self, temp):
+        for string_ in temp:
+            self.s.append(string_)
+        self.m = len(self.s[0])
+        self.n = len(self.s)
+        self.p = list(range(0, self.m))
+        print("P:", self.p)
+        for string_ in self.s:
+            self.insert(string_)
+        print("Trie created")
+        self.setLevels(self.m, self.n)    
+
     def createOutputFile(self, filename):
         filename = "./output/"+filename
         if not os.path.exists(os.path.dirname(filename)):
@@ -106,6 +118,7 @@ class Trie:
             trie.s.append(greedyString)
         for string_ in trie.s:
             trie.insert(string_)
+        trie.setLevels(self.m,self.n)
         return trie
     
 def main():
@@ -113,26 +126,16 @@ def main():
     
     f = open(sys.argv[1], 'r')
     temp = f.read().splitlines()
-    for string_ in temp:
-        trie.s.append(string_)
+
+    trie.create(temp)
+
     f.close()
 
-    m = len(trie.s[0])
-    n = len(trie.s)
-    trie.p = list(range(0, m))
-    print("P:", trie.p)
-    
-    for string_ in trie.s:
-        trie.insert(string_)
-    print("Trie created")
-
-    trie.setLevels(m, n)
     trie.printTrie("preGreedy.txt")
     
     print("===After Greedy===")
 
     minTrie = trie.greedyMinTrie()
-    minTrie.setLevels(m,n)
     print("Min Trie created")
     minTrie.printTrie("postGreedy.txt")
 
