@@ -86,7 +86,7 @@ class Trie:
         print("Printing S-ptrie...")
         self.createOutputFile(filename)
         print("Trie output in", filename)
-        print("Number of nodes: ", self.nodes)
+        print("Number of edges: ", self.nodes)
 
     def calculateDiffsPerLevel(self, level, i):
         already = set()
