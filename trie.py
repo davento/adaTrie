@@ -7,20 +7,19 @@ ALPHABET_SIZE = 26
 class trieNode:
     def __init__(self):
         self.children = [None]*ALPHABET_SIZE
-        self.isEnd = False
         self.id = None
 
 class Trie:
     def __init__(self):
-        self.root = self.getNode()
-        self.diffs = {}
-        self.levels = []
-        self.nodes = 0
-        self.m = 0
-        self.n = 0
         self.s = []
         self.p = []
-        
+        self.m = 0
+        self.n = 0
+        self.nodes = 0
+        self.levels = []
+        self.diffs = {}
+
+        self.root = self.getNode()
         self.root.id = 0
         self.nodesList = [self.root]
 
@@ -68,6 +67,7 @@ class Trie:
             for j in range(ALPHABET_SIZE):
                 if i.children[j]:
                     temp.append((chr(ord('a')+j), i.children[j].id))
+            temp.sort(key=lambda tup: tup[1])
             f.write(str(i.id) + ' ' + str(temp) + '\n')
 
     def printTrie(self, filename = "output.txt"):
